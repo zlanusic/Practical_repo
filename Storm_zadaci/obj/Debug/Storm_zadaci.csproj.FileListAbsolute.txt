@@ -1,0 +1,5 @@
+C:\Users\zlanusic\Documents\Visual Studio 2008\Projects\Storm_zadaci\Storm_zadaci\bin\Debug\Storm_zadaci.exe
+C:\Users\zlanusic\Documents\Visual Studio 2008\Projects\Storm_zadaci\Storm_zadaci\bin\Debug\Storm_zadaci.pdb
+C:\Users\zlanusic\Documents\Visual Studio 2008\Projects\Storm_zadaci\Storm_zadaci\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\zlanusic\Documents\Visual Studio 2008\Projects\Storm_zadaci\Storm_zadaci\obj\Debug\Storm_zadaci.exe
+C:\Users\zlanusic\Documents\Visual Studio 2008\Projects\Storm_zadaci\Storm_zadaci\obj\Debug\Storm_zadaci.pdb
