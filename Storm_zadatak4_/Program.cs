@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Storm_zadatak4_
 {
@@ -11,7 +12,8 @@ namespace Storm_zadatak4_
 
         static void Main(string[] args)
         {
-            List<decimal> nums = new List<decimal>();
+            //List<double> listOfNums = new List<double>();
+            var listOfNums = new List<double>();
 
             string command = "";
             
@@ -21,9 +23,10 @@ namespace Storm_zadatak4_
                 Console.WriteLine("================================");
                 Console.WriteLine("Odaberite jednu od opcija:");
                 Console.WriteLine("********************************");
-                Console.WriteLine("Dodaj broj u listu.(Unesi dodaj)");
-                Console.WriteLine("Trazi broj u listi.(Unesi trazi)");
-                Console.WriteLine("Izadi iz programa. (Unesi kraj)");
+                Console.WriteLine("Dodaj broj u listu.(Upisi dodaj)");
+                Console.WriteLine("Trazi broj u listi.(Upisi trazi)");
+                Console.WriteLine("Ispisi listu.      (Upisi print)");
+                Console.WriteLine("Izadi iz programa. (Upisi kraj)");
                 Console.WriteLine("********************************");
                 Console.Write(">");
                 command = Console.ReadLine().ToUpper();
@@ -54,59 +57,48 @@ namespace Storm_zadatak4_
                             {
                                 case 1:
                                     {
-                                        bool go = true;
-                                        decimal newElement = 0;
+                                        string userInput;
 
-                                        while (go)
+                                        do
                                         {
-                                            Console.WriteLine("\nUnesi broj u intervalu <1, 100>.\nPrilikom unosa decimalnog broja unesite zarez (,)");
+                                            Console.WriteLine("\nUnesi broj u intervalu <1, 100>.\nPrilikom unosa decimalnog broja unesite zarez (,).\nZa izlazak unesite x");
 
-
-                                            //ukoliko korisnik unese 'x'
-                                            ConsoleKeyInfo info = Console.ReadKey();
-                                            if (info.KeyChar == 'x')
-                                            {
-                                                Console.WriteLine("\nUnijeli ste slovo x");
-                                                Console.WriteLine("\nPovratak u glavni menu");
-
-                                                break;
-                                            }
-
-                                            //ovdje dobijem exception
-                                            newElement = decimal.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-                                            
                                             //unos sa konzole
-                                            //if (!decimal.TryParse(Console.ReadLine(), out newElement))
-                                            //{
- 
-                                            //}
-                                            //if (!int.TryParse(Console.ReadLine(), 
-                                            //    NumberStyles.Float, 
-                                            //    CultureInfo.CurrentCulture, 
-                                            //    out newElement))
-                                            //{
+                                            userInput = Console.ReadLine();
 
-                                            //}
-
-                                            //zadani interval
-                                            if (newElement <= 0 || newElement > 100)
+                                            //ukoliko user unese 'x' na konzolu
+                                            if (userInput.ToLower() != "x")
                                             {
-                                                Console.WriteLine("Uneseni broj nije u intrevalu");
-                                                Console.WriteLine("Ponovno unesite broj");
-                                                continue;
+                                                double newElement;
+                                                if (double.TryParse(userInput, out newElement) == true)
+                                                {
+                                                    if (newElement < 1 || newElement > 100)
+                                                    {
+                                                        Console.WriteLine("\nUneseni broj:{0} nije u zadanom intervalu", newElement);
+                                                        Console.WriteLine("\nPonovno unesite broj");
+                                                        continue;
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.WriteLine("\nUneseni broj:{0} je u zadanom intervalu", newElement);
+                                                        listOfNums.Add(newElement);
+                                                        listOfNums.Sort();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("\nUnesli ste neispravan format broja:{0}", newElement);
+                                                }
+                                                
                                             }
-
-                                            //dodaje element u listu i sortira listu
-                                            nums.Add(newElement);
-                                            nums.Sort();
                                         }
-
+                                        while (userInput.ToLower() != "x");
                                     }
                                     break;
 
                                 case 2:
                                     {
-                                        Console.WriteLine("Povratak u glavni menu");
+                                        Console.WriteLine("\nPovratak u glavni menu");
                                         break;
                                     }
                             }
@@ -117,58 +109,75 @@ namespace Storm_zadatak4_
 
                     case "TRAZI":
                         {
-                            bool go = true;
+                                string userInput;
 
-                            while (go)
-                            {
-                                Console.WriteLine("*******************************************");
-                                Console.WriteLine("\nUpisite trazeni broj:");
-
-                                //ukoliko korisnik unese 'x'
-                                ConsoleKeyInfo info = Console.ReadKey();
-                                if (info.KeyChar == 'x')
+                                do
                                 {
-                                    Console.WriteLine("\nUnijeli ste slovo x");
-                                    Console.WriteLine("\nPovratak u glavni menu");
-                                    //go = false;
+                                    Console.WriteLine("\n******************************\nUpisite trazeni broj:");
+                                    userInput = Console.ReadLine();
 
-                                    break;
+                                    //ako user unese 'x'
+                                    if(userInput.ToLower() != "x")
+                                    {
+                                        double lookUpNum;
+                                        if(double.TryParse(userInput, out lookUpNum) == true)
+                                        {
+                                            int index;
+                                            index = listOfNums.IndexOf(lookUpNum);
+                                            if (index == -1)
+                                            {
+                                                Console.WriteLine("\nUneseni broj:{0} ne postoji u listi!\nUnesite ponovno trazeni broj", lookUpNum);
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("\nBroj:{0} se nalazi na indeksu:{1}", lookUpNum, index);
+                                                continue; 
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nUneseni znak:{0} nije broj!\nUnesite ispravan unos", userInput);
+                                        }
+                                    }
+
                                 }
-
-                                //ovdje dobijem exception
-                                decimal lookUpNum = decimal.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-
-                                if (!nums.Contains(lookUpNum))
-                                {
-                                    Console.WriteLine("Ne postoji u listi\n");
-                                }
-
-                                Console.WriteLine();
-                                foreach (int num in nums)
-                                {
-                                    Console.WriteLine(num);
-                                }
-                                Console.WriteLine("\nIndexOf " + lookUpNum + ": {0}\n", nums.IndexOf(lookUpNum));
-
-
+                                while(userInput.ToLower() != "x");
                             }
-                            continue;
-                        }
+                            break;
+
+
+
+                                                     
                     
 
 
                     case "KRAJ":
                         {
-                            Console.WriteLine("***********************************************");
-                            Console.WriteLine("Ugodan dan");
+                            Console.WriteLine("\n******************************");
+                            Console.WriteLine("\nUgodan dan");
                             Environment.Exit(0);
                             Console.Clear();
                             break;
                         }
+                        
+                    case "PRINT":
+                        {
+                            Console.WriteLine("Vasa lista sadrzi slijedece brojeve:");
+                            foreach (var nums in listOfNums)
+                            {
+                                Console.WriteLine("{0}", nums);
+                                
+                            }
+                            Console.WriteLine();
+                            break;
+
+                        }
+
 
                     default:
                         {
-                            Console.WriteLine("Unijeli ste nepostojeci odabir!\n");
+                            Console.WriteLine("\nUnijeli ste nepostojeci odabir!");
                             continue;
                         }
                 }
